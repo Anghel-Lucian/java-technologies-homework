@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    
+    <f:loadBundle basename="message" var="msg" />    
+        
+    <h:head>
+    	<title>#{msg['addCitiesPageTitle']}</title>
+    </h:head>
+    <h:body>
+    	<h:form>
+     		<p:commandLink value="#{msg['goBackButtonLabel']}" action="#{navigation.home}" />
+     	</h:form>
+    
+    	<h1>#{msg['addCitiesPageCTA']}</h1>
+    
+    	<h:form>    
+    	    <!-- used by the CityValidator. The validator can access these attributes and determine if another city with the same name exists -->
+			<h:inputHidden id="attributesContainer">
+   				<f:validator validatorId="cityValidator" />
+		        <f:attribute name="nameHidden" value="#{nameHidden}" />
+    		</h:inputHidden>
+    	
+    		<p:outputLabel for="name" value="#{msg['addCityName']}: " />
+    		<p:inputText id="name" value="#{city.name}" required="true" binding="#{nameHidden}" />
+    		
+    		<br />
+    		<br />
+    		
+    		<!-- update the name field to empty itself. Update the entire cities table to reflect the new entry. 
+    			 Update the validator message container, else the error message will not render itself when it happens
+    		-->
+    		<p:commandButton value="#{msg['addCitiesPageCTA']}" action="#{city.addCity}" update="name,cities,cityValidatorMessage" />
+    		
+    		<br />
+    		<br />
+    		
+			<h:message id="cityValidatorMessage" for="attributesContainer" style="color:red" />
+    	</h:form>
+    	
+    	<br />
+    	<br />
+    	
+    	<!-- data table to render cities -->
+    	<p:dataTable id="cities" var="cityItem" value="#{city.cities}">
+   
+    		<p:column field="name" headerText="#{msg['addCityName']}">
+    			<h:outputText value="#{cityItem.name}" />
+    		</p:column>
+    		
+    	</p:dataTable>
+    </h:body>
+</html>
