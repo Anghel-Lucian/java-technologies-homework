@@ -21,10 +21,10 @@ public class DBManager {
 	private DataSource ds;
 	
 	public Connection createConnection() throws ClassNotFoundException, SQLException {
-//		Class.forName(JDBC_DRIVER);
+		Class.forName(JDBC_DRIVER);
 		
-//		Connection con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-		Connection con = this.ds.getConnection(DB_USER, DB_PASS);
+		Connection con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+//		Connection con = this.ds.getConnection(DB_USER, DB_PASS);
 		
 		return con;
 	}
