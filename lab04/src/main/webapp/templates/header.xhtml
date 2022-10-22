@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  	
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+		<title>Header Facelet</title>
+	</head>
+	
+	<body>
+		<ui:composition>
+			<h2>#{pageTitle}</h2>
+		
+			<h:form style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; max-width: 300px;">
+				<p:commandLink disabled="#{homeLinkDisabled}" value="#{msg['home']}" action="#{navigation.home}" />
+				<br />
+		       	<p:commandLink disabled="#{addCitiesLinkDisabled}" value="#{msg['addCitiesButtonLabel']}" action="#{navigation.cities}" />
+		       	<br />
+		       	<p:commandLink disabled="#{addTeamsLinkDisabled}" value="#{msg['addTeamsButtonLabel']}" action="#{navigation.teams}" />
+       		</h:form>
+		</ui:composition>
+	</body>
+	
+</html>

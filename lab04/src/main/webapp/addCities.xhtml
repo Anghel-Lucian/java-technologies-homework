@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:co="http://java.sun.com/jsf/composite/components">
+    
+    <f:loadBundle basename="message" var="msg" />    
+        
+    <h:head>
+    	<title>#{msg['addCitiesPageTitle']}</title>
+    </h:head>
+    <h:body>
+    	<ui:insert name="header">
+    		<ui:include src="templates/header.xhtml">
+    			<ui:param name="pageTitle" value="#{msg['addCitiesPageCTA']}" />
+    			<ui:param name="addCitiesLinkDisabled" value="true" />
+    		</ui:include>
+    	</ui:insert>
+    
+    	<h:form>    
+    	    <!-- used by the CityValidator. The validator can access these attributes and determine if another city with the same name exists -->
+			<h:inputHidden id="attributesContainer">
+   				<f:validator validatorId="cityValidator" />
+		        <f:attribute name="nameHidden" value="#{nameHidden}" />
+    		</h:inputHidden>
+    	
+    		<p:outputLabel for="name" value="#{msg['addCityName']}: " />
+    		<p:inputText id="name" value="#{city.name}" required="true" binding="#{nameHidden}" />
+    		
+    		<br />
+    		<br />
+    		
+    		<!-- update the name field to empty itself. Update the entire cities table to reflect the new entry. 
+    			 Update the validator message container, else the error message will not render itself when it happens
+    		-->
+    		<p:commandButton value="#{msg['addCitiesPageCTA']}" action="#{city.addCity}" update="name,cityValidatorMessage" />
+    		
+    		<br />
+    		<br />
+    		
+			<h:message id="cityValidatorMessage" for="attributesContainer" style="color:red" />
+    	</h:form>
+    	
+    	<br />
+    	<br />
+    	
+    	<!-- <ui:insert name="citiesView">
+    		<ui:include src="templates/dataView.xhtml">
+    			<ui:param name="id" value="cities" />
+    			<ui:param name="items" value="#{city.cities}" />
+    			<ui:param name="columns" value="#{city.columns}" />
+    		</ui:include>
+    	</ui:insert>-->
+    	
+    	<co:crudTable />
+    	
+ 		<ui:insert name="footer">
+    		<ui:include src="templates/footer.xhtml" />
+    	</ui:insert>
+    </h:body>
+</html>

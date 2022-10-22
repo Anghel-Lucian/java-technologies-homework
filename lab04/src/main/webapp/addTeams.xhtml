@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    
+    <f:loadBundle basename="message" var="msg" /> 
+        
+    <h:head>
+    	<title>#{msg['addTeamsPageTitle']}</title>
+    </h:head>
+     <h:body>
+       	<ui:insert name="header">
+    		<ui:include src="templates/header.xhtml">
+    			<ui:param name="pageTitle" value="#{msg['addTeamPageCTA']}" />
+    			<ui:param name="addTeamsLinkDisabled" value="true" />
+    		</ui:include>
+    	</ui:insert>
+     	
+     	<h1>#{msg['addTeamPageCTA']}</h1>
+     
+    	<h:form>    
+    	    <!-- used by the TeamValidator. The validator can access these attributes and determine if another team with these attributes exists -->
+			<h:inputHidden id="attributesContainer">
+   				<f:validator validatorId="teamValidator" />
+		        <f:attribute name="nameHidden" value="#{nameHidden}" />
+		        <f:attribute name="foundingDateHidden" value="#{foundingDateHidden}" />
+		        <f:attribute name="cityHidden" value="#{cityHidden}" converter="cityConverter" />
+    		</h:inputHidden>
+    		
+    		<p:outputLabel for="name" value="#{msg['addTeamName']}: " />
+    		<p:inputText id="name" value="#{team.name}" required="true" binding="#{nameHidden}" />
+    		
+    		<br />
+    		<br />
+    		
+    		<p:outputLabel for="foundingDate" value="#{msg['addTeamFoundingDate']}: " />
+    		<p:datePicker 
+    			id="foundingDate" 
+    			value="#{team.foundingDate}" 
+    			required="true" 
+    			binding="#{foundingDateHidden}" 
+    			locale="ro"
+    			pattern="yyyy-MM-dd"
+    		/>
+
+			<br />
+    		<br />
+
+			<!-- POJO selection box. Possible because of CityConverter. Since the cities field is an array of objects
+				 and not of strings, we need the converter to return the object itself or its id
+			-->
+			<p:selectOneMenu id="city" value="#{team.city}" converter="cityConverter" var="cityItem" binding="#{cityHidden}">
+				<f:selectItems value="#{team.cities}" var="c" itemLabel="#{c.name}" itemValue="#{c}"></f:selectItems>
+				
+				<p:column>
+	                <f:facet name="header">
+	                    <h:outputText value="Name"/>
+	                </f:facet>
+	                <h:outputText value="#{cityItem.name}"/>
+				</p:column>
+			</p:selectOneMenu>
+			<h:message id="cityConverterMessage" for="city" style="color:red" />
+
+			<br />
+    		<br />
+
+    		<!-- update elements to reflect the actual state of the app -->
+    		<p:commandButton value="#{msg['addTeamPageCTA']}" action="#{team.addTeam}" update="cityConverterMessage,name,foundingDate,city,teamValidatorMessage,teams" />
+    		
+    		<br />
+    		<br />
+    		
+			<h:message id="teamValidatorMessage" for="attributesContainer" style="color:red" />
+    	</h:form>
+    	
+    	<br />
+    	<br />
+    	
+   	   	<ui:insert name="teamsView">
+    		<ui:include src="templates/dataView.xhtml">
+    			<ui:param name="id" value="teams" />
+    			<ui:param name="items" value="#{team.teams}" />
+    			<ui:param name="columns" value="#{team.columns}" />
+    		</ui:include>
+    	</ui:insert>
+    	
+     	 <ui:insert name="footer">
+    		<ui:include src="templates/footer.xhtml" />
+    	</ui:insert>
+    </h:body>
+</html>
