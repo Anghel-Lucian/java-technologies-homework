@@ -6,12 +6,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.teams.entities.City;
 import com.teams.entities.Team;
-import com.teams.utils.DBManager;
+import com.teams.repository.CityRepository;
+import com.teams.repository.TeamRepository;
 import com.teams.utils.DataTableColumn;
 
 // class used in addTeams page. teams field is used to render a table of teams;
@@ -29,36 +32,46 @@ public class TeamBean implements Serializable {
 		};
 	private String name;
 	private Date foundingDate;
-	private City city;
+	private String cityId;
 	private ArrayList<Team> teams = new ArrayList<Team>();
 	private ArrayList<City> cities = new ArrayList<City>();
 	
-	public TeamBean() throws ClassNotFoundException, SQLException {
-		DBManager dbm = new DBManager();
-		ArrayList<Team> teams = dbm.getTeams();
-		ArrayList<City> cities = dbm.getCities();
-		
-		this.teams = teams;
-		this.setCities(cities);
-	}
+	@Inject
+	TeamRepository tp;
 	
-	public ArrayList<Team> getTeams() {
-		return this.teams;
+	@Inject
+	CityRepository cp;
+	
+	@PostConstruct
+	public void init() {
+		ArrayList<City> cities = cp.findAllCities();
+		ArrayList<Team> teams = tp.findAllTeams();
+		
+		this.setTeams(teams);
+		this.setCities(cities);
 	}
 	
 	public void addTeam() throws ClassNotFoundException, SQLException {
 		String id = UUID.randomUUID().toString();
 		String parsedFoundingDate = this.getParsedFoundingDate();
 		
-		Team team = new Team(id, this.name, parsedFoundingDate, this.city.getId(), this.city.getName());
-		DBManager dbm = new DBManager();
+		Team team = new Team();
 		
-		dbm.addTeam(team);
+		team.setId(id);
+		team.setName(this.name);
+		team.setFoundingDate(parsedFoundingDate);
+		
+		City teamCity = cp.findCity(this.cityId);
+		
+		team.setCity(this.cityId);
+		team.setCityName(teamCity.getName());
+		
+		tp.insertTeam(team);
+		
 		this.teams.add(team);
-		
 		this.name = "";
+		this.cityId = "";
 		this.foundingDate = null;
-		this.city = null;
 	}
 	
 	public String getName() {
@@ -77,20 +90,20 @@ public class TeamBean implements Serializable {
 		this.foundingDate = foundingDate;
 	}
 	
-	public City getCity() {
-		return city;
-	}
-	
-	public void setCity(City city) {
-		this.city = city;
-	}
-	
 	public ArrayList<City> getCities() {
-		return cities;
+		return this.cities;
 	}
 
 	public void setCities(ArrayList<City> cities) {
 		this.cities = cities;
+	}
+	
+	private void setTeams(ArrayList<Team> teams) {
+		this.teams = teams;
+	}
+
+	public ArrayList<Team> getTeams() {
+		return this.teams;
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -105,5 +118,13 @@ public class TeamBean implements Serializable {
 
 	public void setColumns(DataTableColumn[] columns) {
 		this.columns = columns;
+	}
+
+	public String getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(String cityId) {
+		this.cityId = cityId;
 	}
 }

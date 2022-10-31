@@ -106,7 +106,13 @@ public class DBManager {
 			String city = rs.getString("team_city");
 			String cityName = rs.getString("team_city_name");
 			
-			Team team = new Team(id, name, foundingDate, city, cityName);
+			Team team = new Team();
+			
+			team.setId(id);
+			team.setName(name);
+			team.setFoundingDate(foundingDate);
+			team.setCity(city);
+			team.setCityName(cityName);
 			
 			teams.add(team);
 		}

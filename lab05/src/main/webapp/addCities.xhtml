@@ -3,8 +3,7 @@
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:ui="http://java.sun.com/jsf/facelets"
         xmlns:f="http://java.sun.com/jsf/core"
-        xmlns:p="http://primefaces.org/ui"
-        xmlns:co="http://java.sun.com/jsf/composite/components">
+        xmlns:p="http://primefaces.org/ui">
     
     <f:loadBundle basename="message" var="msg" />    
         
@@ -20,12 +19,6 @@
     	</ui:insert>
     
     	<h:form>    
-    	    <!-- used by the CityValidator. The validator can access these attributes and determine if another city with the same name exists -->
-			<h:inputHidden id="attributesContainer">
-   				<f:validator validatorId="cityValidator" />
-		        <f:attribute name="nameHidden" value="#{nameHidden}" />
-    		</h:inputHidden>
-    	
     		<p:outputLabel for="name" value="#{msg['addCityName']}: " />
     		<p:inputText id="name" value="#{city.name}" required="true" binding="#{nameHidden}" />
     		
@@ -60,18 +53,27 @@
     		<p:commandButton value="Update city" action="#{city.updateCity}" update="updatedCityId,updatedCityName" />
     	</h:form>
     	
+    	<!-- Used for testing deletion of cities -->
+    	<h:form>    
+    		<p:outputLabel for="deletedCityId" value="Deleted city id: " />
+    		<p:inputText id="deletedCityId" value="#{city.deleteCityId}" required="true" />
+    		
+    		<br />
+    		<br />
+    		
+    		<p:commandButton value="Delete city" action="#{city.deleteCity}" update="deletedCityId" />
+    	</h:form>
+    	
     	<br />
     	<br />
     	
-    	<!-- <ui:insert name="citiesView">
+		<ui:insert name="citiesView">
     		<ui:include src="templates/dataView.xhtml">
     			<ui:param name="id" value="cities" />
     			<ui:param name="items" value="#{city.cities}" />
     			<ui:param name="columns" value="#{city.columns}" />
     		</ui:include>
-    	</ui:insert>-->
-    	
-    	<co:crudTable />
+    	</ui:insert>
     	
  		<ui:insert name="footer">
     		<ui:include src="templates/footer.xhtml" />

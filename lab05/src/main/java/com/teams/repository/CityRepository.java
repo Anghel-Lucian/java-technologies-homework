@@ -26,12 +26,17 @@ public class CityRepository implements Serializable {
 		return cities;
 	}
 	
+	public City findCity(String id) {
+		EntityManager em = emf.createEntityManager();
+		
+		return em.find(City.class, id);
+	}
+	
 	// CREATE
 	public void insertCity(City city) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
-		// Save city to DB
 		em.persist(city);
 		
 		em.getTransaction().commit();
@@ -50,8 +55,14 @@ public class CityRepository implements Serializable {
 	}
 	
 	// DELETE
-	// TODO: delete method with JPA
-	// TODO: transform team into entity
-	// TODO: create player entity
-	// TODO: use JPA criteria API to create search for players
+	public void deleteCity(String id) {
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		City foundCity = em.find(City.class, id);
+		
+		em.remove(foundCity);
+		
+		em.getTransaction().commit();
+	}
 }

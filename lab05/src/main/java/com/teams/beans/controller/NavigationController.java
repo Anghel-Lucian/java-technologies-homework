@@ -23,4 +23,8 @@ public class NavigationController implements Serializable {
 	public String home() {
 		return "home";
 	}
+	
+	public String players() {
+		return "players";
+	}
 }

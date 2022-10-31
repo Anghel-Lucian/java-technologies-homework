@@ -1,18 +1,47 @@
 package com.teams.entities;
 
-public class Team {
+import java.io.Serializable;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@SuppressWarnings("serial")
+@Entity
+@Table(name="team")
+@NamedQueries({
+	@NamedQuery(name = "Team.findAll", query = "SELECT t FROM Team t")
+})
+public class Team implements Serializable {
+	
+	@Id
+	@Column(name="team_id")
 	private String id;
+	
+	@Column(name="team_name")
 	private String name;
+	
+	@Column(name="team_founding_date")
 	private String foundingDate;
+	
+	@Column(name="team_city")
 	private String city;
+	
+	@Column(name="team_city_name")
 	private String cityName;
 	
-	public Team(String id, String name, String foundingDate, String city, String cityName) {
+	@JoinColumn(name="team_players")
+	@OneToMany(mappedBy="team")
+	private Set<Player> players;
+	
+	public void setId(String id) {
 		this.id = id;
-		this.name = name;
-		this.foundingDate = foundingDate;
-		this.city = city;
-		this.cityName = cityName;
 	}
 	
 	public String getId() {

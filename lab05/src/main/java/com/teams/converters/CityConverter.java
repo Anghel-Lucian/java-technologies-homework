@@ -6,18 +6,21 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
 
 import com.teams.entities.City;
-import com.teams.utils.DBManager;
+import com.teams.repository.CityRepository;
 
 @FacesConverter(value = "cityConverter")
 public class CityConverter implements Converter<Object> {
+	@Inject
+	CityRepository cp;
+	
 	@Override
 	public City getAsObject(FacesContext facesContext, UIComponent component, String value) {
 		if(value != null && value.trim().length() > 0) {
 			try {
-				DBManager dbm = new DBManager();
-				City city = dbm.getCity(value);
+				City city = cp.findCity(value);
 				return city;
 			} catch(Exception e) {
 				e.printStackTrace();

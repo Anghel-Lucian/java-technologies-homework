@@ -8,10 +8,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.teams.entities.Team;
-import com.teams.utils.DBManager;
+import com.teams.repository.TeamRepository;
 import com.teams.utils.DataTableColumn;
 
 // used by active.xhtml composite component. Fetches teams and adds them to activeTeams field
@@ -27,9 +28,11 @@ public class TeamsAnniversariesBean implements Serializable {
 		new DataTableColumn("cityName", "City")
 	};
 	
+	@Inject
+	TeamRepository tp;
+	
 	public void updateActiveTeams() throws ClassNotFoundException, SQLException, ParseException {
-		DBManager dbm = new DBManager();
-		ArrayList<Team> teams = dbm.getTeams();
+		ArrayList<Team> teams = tp.findAllTeams();
 		
 		for(int i = 0; i < teams.size(); i++) {
 			String teamFoundingDate = teams.get(i).getFoundingDate();

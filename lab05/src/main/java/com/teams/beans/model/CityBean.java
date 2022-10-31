@@ -25,14 +25,17 @@ public class CityBean implements Serializable {
 	private String name;
 	private String updatedCityId;
 	private String updatedCityName;
+	private String deleteCityId;
 	
 	@Inject
 	CityRepository cp;
 	
+	// READ
 	public ArrayList<City> getCities() {
 		return cp.findAllCities();
 	}
 	
+	// CREATE
 	public void addCity() {
 		String id = UUID.randomUUID().toString();
 		City city = new City();
@@ -47,6 +50,7 @@ public class CityBean implements Serializable {
 		this.setName("");
 	}
 	
+	// UPDATE
 	public void updateCity() {
 		City city = new City();
 		
@@ -57,6 +61,13 @@ public class CityBean implements Serializable {
 		
 		this.setUpdatedCityId("");
 		this.setUpdatedCityName("");
+	}
+	
+	// DELETE
+	public void deleteCity() {
+		cp.deleteCity(deleteCityId);
+		
+		this.setDeleteCityId("");
 	}
 	
 	public String getName() {
@@ -89,5 +100,13 @@ public class CityBean implements Serializable {
 
 	public void setUpdatedCityName(String updatedCityName) {
 		this.updatedCityName = updatedCityName;
+	}
+
+	public String getDeleteCityId() {
+		return deleteCityId;
+	}
+
+	public void setDeleteCityId(String delteCityId) {
+		this.deleteCityId = delteCityId;
 	};
 }

@@ -21,14 +21,6 @@
      	<h1>#{msg['addTeamPageCTA']}</h1>
      
     	<h:form>    
-    	    <!-- used by the TeamValidator. The validator can access these attributes and determine if another team with these attributes exists -->
-			<h:inputHidden id="attributesContainer">
-   				<f:validator validatorId="teamValidator" />
-		        <f:attribute name="nameHidden" value="#{nameHidden}" />
-		        <f:attribute name="foundingDateHidden" value="#{foundingDateHidden}" />
-		        <f:attribute name="cityHidden" value="#{cityHidden}" converter="cityConverter" />
-    		</h:inputHidden>
-    		
     		<p:outputLabel for="name" value="#{msg['addTeamName']}: " />
     		<p:inputText id="name" value="#{team.name}" required="true" binding="#{nameHidden}" />
     		
@@ -48,26 +40,14 @@
 			<br />
     		<br />
 
-			<!-- POJO selection box. Possible because of CityConverter. Since the cities field is an array of objects
-				 and not of strings, we need the converter to return the object itself or its id
-			-->
-			<p:selectOneMenu id="city" value="#{team.city}" converter="cityConverter" var="cityItem" binding="#{cityHidden}">
-				<f:selectItems value="#{team.cities}" var="c" itemLabel="#{c.name}" itemValue="#{c}"></f:selectItems>
-				
-				<p:column>
-	                <f:facet name="header">
-	                    <h:outputText value="Name"/>
-	                </f:facet>
-	                <h:outputText value="#{cityItem.name}"/>
-				</p:column>
-			</p:selectOneMenu>
-			<h:message id="cityConverterMessage" for="city" style="color:red" />
+    		<p:outputLabel for="cityId" value="City Id: " />
+    		<p:inputText id="cityId" value="#{team.cityId}" required="true" />
 
 			<br />
     		<br />
 
     		<!-- update elements to reflect the actual state of the app -->
-    		<p:commandButton value="#{msg['addTeamPageCTA']}" action="#{team.addTeam}" update="cityConverterMessage,name,foundingDate,city,teamValidatorMessage,teams" />
+    		<p:commandButton value="#{msg['addTeamPageCTA']}" action="#{team.addTeam}" update="name,foundingDate,teamValidatorMessage,teams,cityId" />
     		
     		<br />
     		<br />
