@@ -13,7 +13,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import com.teams.entities.Player;
-import com.teams.entities.Team;
 
 @Stateless
 public class PlayerRepository {
@@ -21,7 +20,7 @@ public class PlayerRepository {
 	@PersistenceUnit
 	EntityManagerFactory emf;
 	
-	public ArrayList<Player> findWithCriteria(String name, int minimumAge, int maximumAge, String team) {
+	public ArrayList<Player> findWithCriteria(String name, int minimumAge, int maximumAge) {
 		EntityManager em = emf.createEntityManager();
 		
 		CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -31,19 +30,19 @@ public class PlayerRepository {
 		Predicate finalCondition = null;
 		
 		if(!name.isEmpty()) {
-			Predicate condition = builder.equal(e.get("name"), name);
+			Predicate condition = builder.like(e.get("name"), '%' + name + '%'); // added % wildcard because otherwise the app would select no row from the DB. In that sense, the criteria by "name" will function as a .contains in the app
 			predicates.add(condition);
 		}
-//		
-//		if(!minimumAge.isEmpty()) {
-//			Predicate condition = builder.equal(e.get("startingTime"), startingTime);
-//			predicates.add(condition);
-//		}
-//		
-//		if(duration > 0) {
-//			Predicate condition = builder.equal(e.get("duration"), duration);
-//			predicates.add(condition);
-//		}
+		
+		if(minimumAge > 0) {
+			Predicate condition = builder.greaterThanOrEqualTo(e.get("age"), minimumAge);
+			predicates.add(condition);
+		}
+		
+		if(maximumAge > 0 && maximumAge > minimumAge) {
+			Predicate condition = builder.lessThanOrEqualTo(e.get("age"), maximumAge);
+			predicates.add(condition);
+		}
 		
 		for(int i = 0; i < predicates.size(); i++) {
 			if(i == 0) {

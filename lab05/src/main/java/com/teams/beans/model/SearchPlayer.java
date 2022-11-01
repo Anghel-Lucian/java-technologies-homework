@@ -9,20 +9,11 @@ import javax.inject.Named;
 
 import com.teams.entities.Player;
 import com.teams.repository.PlayerRepository;
-import com.teams.utils.DataTableColumn;
 
 @Named("searchPlayer")
 @ViewScoped
 public class SearchPlayer implements Serializable {
-	// TODO: find a way to render the team's name
-	// TODO: implement all the criterias in pp.findWithCriteria
-	// TODO: add inheritance mapping to the app
 	private static final long serialVersionUID = 1L;
-	private DataTableColumn[] columns = {
-			new DataTableColumn("name", "Name"),
-			new DataTableColumn("age", "Age"),
-			new DataTableColumn("team", "Team")
-		};
 	private ArrayList<Player> players;
 	private boolean showName;
 	private boolean showAgeInterval;
@@ -30,13 +21,12 @@ public class SearchPlayer implements Serializable {
 	private String name = "";
 	private int minimumAge = 0;
 	private int maximumAge = 0;
-	private String team = "";
 	
 	@Inject
 	PlayerRepository pp;
 	
 	public void searchPlayer() {
-		setPlayers(pp.findWithCriteria(name, minimumAge, maximumAge, team));
+		setPlayers(pp.findWithCriteria(name, minimumAge, maximumAge));
 	}
 	
 	public ArrayList<Player> getPlayers() {
@@ -80,19 +70,5 @@ public class SearchPlayer implements Serializable {
 	}
 	public void setMaximumAge(int maximumAge) {
 		this.maximumAge = maximumAge;
-	}
-	public String getTeam() {
-		return team;
-	}
-	public void setTeam(String team) {
-		this.team = team;
-	}
-
-	public DataTableColumn[] getColumns() {
-		return columns;
-	}
-
-	public void setColumns(DataTableColumn[] columns) {
-		this.columns = columns;
 	}
 }

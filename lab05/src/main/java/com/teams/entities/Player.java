@@ -7,6 +7,8 @@ import javax.persistence.Id;
 @SuppressWarnings("serial")
 @Entity
 @Table(name="player")
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="player_position", discriminatorType=DiscriminatorType.STRING)
 public class Player implements Serializable {
 
 	@Id
@@ -22,6 +24,9 @@ public class Player implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="player_team", nullable=false)
 	private Team team;
+	
+	@Column(name="player_position")
+	private String position;
 	
 	public String getId() {
 		return this.id;
@@ -54,5 +59,12 @@ public class Player implements Serializable {
 	public void setTeam(Team team) {
 		this.team = team;
 	}
-   
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
 }
