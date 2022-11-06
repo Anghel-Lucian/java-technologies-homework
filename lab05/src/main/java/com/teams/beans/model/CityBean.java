@@ -19,7 +19,8 @@ import com.teams.utils.DataTableColumn;
 public class CityBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private DataTableColumn[] columns = {
-			new DataTableColumn("name", "Name")
+			new DataTableColumn("name", "Name"),
+			new DataTableColumn("id", "Id"),
 		};
 	private ArrayList<City> cities = new ArrayList<City>();
 	private String name;

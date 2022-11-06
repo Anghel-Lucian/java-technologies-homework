@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    
+    <f:loadBundle basename="message" var="msg" /> 
+        
+    <h:head>
+    	<title>#{msg['addTeamsPageTitle']}</title>
+    </h:head>
+     <h:body>
+       	<ui:insert name="header">
+    		<ui:include src="templates/header.xhtml">
+    			<ui:param name="pageTitle" value="#{msg['addTeamPageCTA']}" />
+    			<ui:param name="addTeamsLinkDisabled" value="true" />
+    		</ui:include>
+    	</ui:insert>
+     	
+     	<h1>#{msg['addTeamPageCTA']}</h1>
+     
+    	<h:form>    
+    		<p:outputLabel for="name" value="#{msg['addTeamName']}: " />
+    		<p:inputText id="name" value="#{team.name}" required="true" binding="#{nameHidden}" />
+    		
+    		<br />
+    		<br />
+    		
+    		<p:outputLabel for="foundingDate" value="#{msg['addTeamFoundingDate']}: " />
+    		<p:datePicker 
+    			id="foundingDate" 
+    			value="#{team.foundingDate}" 
+    			required="true" 
+    			binding="#{foundingDateHidden}" 
+    			locale="ro"
+    			pattern="yyyy-MM-dd"
+    		/>
+
+			<br />
+    		<br />
+
+    		<p:outputLabel for="cityId" value="City Id: " />
+    		<p:inputText id="cityId" value="#{team.cityId}" required="true" />
+
+			<br />
+    		<br />
+
+    		<!-- update elements to reflect the actual state of the app -->
+    		<p:commandButton value="#{msg['addTeamPageCTA']}" action="#{team.addTeam}" update="name,foundingDate,teamValidatorMessage,teams,cityId" />
+    		
+    		<br />
+    		<br />
+    		
+			<h:message id="teamValidatorMessage" for="attributesContainer" style="color:red" />
+    	</h:form>
+    	
+    	<br />
+    	<br />
+    	
+   	   	<ui:insert name="teamsView">
+    		<ui:include src="templates/dataView.xhtml">
+    			<ui:param name="id" value="teams" />
+    			<ui:param name="items" value="#{team.teams}" />
+    			<ui:param name="columns" value="#{team.columns}" />
+    		</ui:include>
+    	</ui:insert>
+    	
+     	 <ui:insert name="footer">
+    		<ui:include src="templates/footer.xhtml" />
+    	</ui:insert>
+    </h:body>
+</html>

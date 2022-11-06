@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:co="http://xmlns.jcp.org/jsf/composite/components">
+    
+    <f:loadBundle basename="message" var="msg" />    
+        
+    <h:head>
+    	<title>Search Players</title>
+    </h:head>
+    <h:body>
+    	<ui:insert name="header">
+    		<ui:include src="templates/header.xhtml">
+    			<ui:param name="pageTitle" value="Search Players" />
+    			<ui:param name="searchPlayerLinkDisabled" value="true" />
+    		</ui:include>
+    	</ui:insert>
+ 
+    	<h:form id="playerSearchForm">    
+            <p:selectBooleanCheckbox value="#{searchPlayer.showName}" itemLabel="Name" >
+                <p:ajax update="playerSearchForm"/>
+            </p:selectBooleanCheckbox>
+    		<p:selectBooleanCheckbox value="#{searchPlayer.showAgeInterval}" itemLabel="Age interval" >
+                <p:ajax update="playerSearchForm"/>
+            </p:selectBooleanCheckbox>
+            <p:selectBooleanCheckbox value="#{searchPlayer.showTeam}" itemLabel="Team" >
+                <p:ajax update="playerSearchForm"/>
+            </p:selectBooleanCheckbox>
+            
+            <br />
+            <br />
+            
+   			<p:outputLabel rendered="#{searchPlayer.showName}" for="nameSearch" value="Name: " />
+    		<p:inputText rendered="#{searchPlayer.showName}" id="nameSearch" value="#{searchPlayer.name}" />
+    	
+    		<br />
+    		<br />
+    		
+    		<p:outputLabel rendered="#{searchPlayer.showAgeInterval}" for="minimumAgeSearch" value="Minimum age: " />
+    		<p:inputNumber rendered="#{searchPlayer.showAgeInterval}" id="minimumAgeSearch" value="#{searchPlayer.minimumAge}" />
+
+    		<br />
+    	
+    		<p:outputLabel rendered="#{searchPlayer.showAgeInterval}" for="maximumAgeSearch" value="Maximum age: " />
+    		<p:inputNumber rendered="#{searchPlayer.showAgeInterval}" id="maximumAgeSearch" value="#{searchPlayer.maximumAge}" />
+    	
+    		<br />
+    		<br />
+    		
+    		<p:outputLabel rendered="#{searchPlayer.showTeam}" for="teamSearch" value="Team: " />
+    		<p:inputText rendered="#{searchPlayer.showTeam}" id="teamSearch" value="#{searchPlayer.team}" />
+    	
+    		<br />
+    		<br />
+    		
+	        <p:commandButton value="Search" action="#{searchPlayer.searchPlayer}" update="playerSearchForm,playersSearch" />
+    	</h:form>
+    	
+    	<br />
+    	<br />
+    	
+    	<br />
+    	<br />
+   
+    	<p:dataTable id="playersSearch" var="item" value="#{searchPlayer.players}">
+    	
+			<p:column headerText="Name">
+				<h:outputText value="#{item.name}" />
+			</p:column>
+   			
+   			<p:column headerText="Age">
+   				<h:outputText value="#{item.age}" />
+   			</p:column>
+   		
+   			<p:column headerText="Position">
+   				<h:outputText value="#{item.position}" />
+   			</p:column>
+
+   			<p:column headerText="Goals defended">
+   				<h:outputText rendered="#{item.class == 'com.teams.entities.PlayerGoalKeeper'}" value="#{item.goalsDefended}" />
+   			</p:column>
+   			
+   		</p:dataTable>
+
+    	<ui:insert name="footer">
+    		<ui:include src="templates/footer.xhtml" />
+    	</ui:insert>
+    </h:body>
+</html>

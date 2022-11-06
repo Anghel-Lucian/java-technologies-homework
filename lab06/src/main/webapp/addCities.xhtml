@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    
+    <f:loadBundle basename="message" var="msg" />    
+        
+    <h:head>
+    	<title>#{msg['addCitiesPageTitle']}</title>
+    </h:head>
+    <h:body>
+    	<ui:insert name="header">
+    		<ui:include src="templates/header.xhtml">
+    			<ui:param name="pageTitle" value="#{msg['addCitiesPageCTA']}" />
+    			<ui:param name="addCitiesLinkDisabled" value="true" />
+    		</ui:include>
+    	</ui:insert>
+    
+    	<h:form>    
+    		<p:outputLabel for="name" value="#{msg['addCityName']}: " />
+    		<p:inputText id="name" value="#{city.name}" required="true" binding="#{nameHidden}" />
+    		
+    		<br />
+    		<br />
+    		
+    		<!-- update the name field to empty itself. Update the entire cities table to reflect the new entry. 
+    			 Update the validator message container, else the error message will not render itself when it happens
+    		-->
+    		<p:commandButton value="#{msg['addCitiesPageCTA']}" action="#{city.addCity}" update="name,cityValidatorMessage" />
+    		
+    		<br />
+    		<br />
+    		
+			<h:message id="cityValidatorMessage" for="attributesContainer" style="color:red" />
+    	</h:form>
+    	
+    	<!-- Used for testing update of cities -->
+    	<h:form>    
+    		<p:outputLabel for="updatedCityName" value="Updated city name: " />
+    		<p:inputText id="updatedCityName" value="#{city.updatedCityName}" required="true" />
+    		
+    		<br />
+    		<br />
+    		
+    		<p:outputLabel for="updatedCityId" value="Updated city id: " />
+    		<p:inputText id="updatedCityId" value="#{city.updatedCityId}" required="true" />
+    		
+    		<br />
+    		<br />
+    		
+    		<p:commandButton value="Update city" action="#{city.updateCity}" update="updatedCityId,updatedCityName" />
+    	</h:form>
+    	
+    	<!-- Used for testing deletion of cities -->
+    	<h:form>    
+    		<p:outputLabel for="deletedCityId" value="Deleted city id: " />
+    		<p:inputText id="deletedCityId" value="#{city.deleteCityId}" required="true" />
+    		
+    		<br />
+    		<br />
+    		
+    		<p:commandButton value="Delete city" action="#{city.deleteCity}" update="deletedCityId" />
+    	</h:form>
+    	
+    	<br />
+    	<br />
+    	
+		<ui:insert name="citiesView">
+    		<ui:include src="templates/dataView.xhtml">
+    			<ui:param name="id" value="cities" />
+    			<ui:param name="items" value="#{city.cities}" />
+    			<ui:param name="columns" value="#{city.columns}" />
+    		</ui:include>
+    	</ui:insert>
+    	
+ 		<ui:insert name="footer">
+    		<ui:include src="templates/footer.xhtml" />
+    	</ui:insert>
+    </h:body>
+</html>

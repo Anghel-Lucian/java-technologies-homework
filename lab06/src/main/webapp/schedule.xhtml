@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    
+    <f:loadBundle basename="message" var="msg" />    
+        
+    <h:head>
+    	<title>Schedule matches</title>
+    </h:head>
+    <h:body>
+    	<ui:insert name="header">
+    		<ui:include src="templates/header.xhtml">
+    			<ui:param name="pageTitle" value="Schedule" />
+    			<ui:param name="scheduleLinkDisabled" value="true" />
+    		</ui:include>
+    	</ui:insert>
+    
+    	<h:form>    
+   			<p:outputLabel for="teamOne" value="Team one: " />
+    		<p:inputText id="teamOne" value="#{scheduler.teamOne}" required="true" />
+			
+			<br />
+    		<br />
+
+   			<p:outputLabel for="teamTwo" value="Team two: " />
+    		<p:inputText id="teamTwo" value="#{scheduler.teamTwo}" required="true" />
+    		
+    		<br />
+    		<br />
+    		
+    		<p:outputLabel for="week" value="Week: " />
+    		<p:inputNumber id="week" value="#{scheduler.week}" required="true" />
+    		
+    		<br />
+    		<br />
+    		
+    		<p:commandButton value="Schedule" action="#{scheduler.schedule}" update="teamOne,teamTwo,week" />
+    	</h:form>
+    	
+ 		<ui:insert name="footer">
+    		<ui:include src="templates/footer.xhtml" />
+    	</ui:insert>
+    </h:body>
+</html>

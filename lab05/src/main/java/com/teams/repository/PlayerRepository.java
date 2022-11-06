@@ -4,8 +4,7 @@ import java.util.ArrayList;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -17,12 +16,10 @@ import com.teams.entities.Player;
 @Stateless
 public class PlayerRepository {
 
-	@PersistenceUnit
-	EntityManagerFactory emf;
+	 @PersistenceContext(unitName = "lab06PU")
+	 EntityManager em;
 	
 	public ArrayList<Player> findWithCriteria(String name, int minimumAge, int maximumAge) {
-		EntityManager em = emf.createEntityManager();
-		
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<Player> query = builder.createQuery(Player.class);
 		Root<Player> e = query.from(Player.class);

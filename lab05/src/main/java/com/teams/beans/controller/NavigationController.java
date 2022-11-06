@@ -27,4 +27,8 @@ public class NavigationController implements Serializable {
 	public String players() {
 		return "players";
 	}
+	
+	public String schedule() {
+		return "schedule";
+	}
 }
