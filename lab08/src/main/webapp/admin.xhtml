@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    	<title>Lab07 - Admin Dashboard</title>
+    </h:head>
+    <h:body>
+		<h1>Admin Dashboard</h1>
+		
+		<br />
+		
+		<p:outputPanel>
+			<h3>Registration Dates</h3>
+			
+			<h:form>
+				<p:outputLabel for="registrationDateStart" value="Registration start: " />
+				<p:inputText id="registrationDateStart" value="#{admin.registrationStart}" />
+				<br />
+				<br />
+				<p:outputLabel for="registrationDateEnd" value="Registration end: " />
+				<p:inputText id="registrationDateEnd" value="#{admin.registrationEnd}" />
+				<br />
+				<br />
+				<p:commandButton value="Update registration dates" action="#{admin.updateRegistrationDates}" />
+			</h:form>		
+			
+			<h:form>
+				<p:outputLabel for="submissionDateStart" value="Submission start: " />
+				<p:inputText id="submissionDateStart" value="#{admin.submissionStart}" />
+				<br />
+				<br />
+				<p:outputLabel for="submissionDateEnd" value="Submission end: " />
+				<p:inputText id="submissionDateEnd" value="#{admin.submissionEnd}" />
+				<br />
+				<br />
+				<p:commandButton value="Update submission dates" action="#{admin.updateSubmissionDates}" />
+			</h:form>		
+		</p:outputPanel>
+
+		<br />
+		
+		<p:outputPanel>
+			<h3>Publications</h3>
+			<h:panelGroup id="adminPublicationsTableContainer">
+		    	<p:dataTable id="adminPublicationsTable" var="item" value="#{document.documents}">
+		    	
+	    			<p:column headerText="Name">
+	    				<h:outputText value="#{item.name}" />
+	    			</p:column>
+	
+	    			<p:column headerText="Authors">
+	    				<h:outputText value="#{item.authors}" />
+	    			</p:column>
+	    			
+	    		</p:dataTable>
+	   		</h:panelGroup>
+   		</p:outputPanel>
+    </h:body>
+</html>
